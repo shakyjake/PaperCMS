@@ -109,7 +109,7 @@
 	 * @param int $fetch_type [optional] The desired fetch type
 	 * @return RecordSet
 	 */
-	function get_records(string $sql, mixed $params = null, ?array $options = [], ?int $fetch_type = SQLSRV_FETCH_ASSOC) : RecordSet {
+	function get_records(string $sql, mixed &$params = null, ?array $options = [], ?int $fetch_type = SQLSRV_FETCH_ASSOC) : RecordSet {
 
 		if(!is_array($options)){
 			$options = [$options];
@@ -239,11 +239,11 @@
 		foreach($params as $key => $value){
 
 			if(is_countable($value)){
-				if(count($params[0]) === 1){
-					$params[$value][] = SQLSRV_PARAM_IN;
+				if(count($value) === 1){
+					$params[$key][] = SQLSRV_PARAM_IN;
 				}
-				if($key === 0 && $value[0][1] === SQLSRV_PARAM_OUT && count($value[0]) === 2){
-					$params[$value][] = SQLSRV_PHPTYPE_INT;/* SQLSRV only returns integers (unless blah blah blah, never ever use OUTPUT parameters in SQL besides RETURN) */
+				if($key === 0 && $value[1] === SQLSRV_PARAM_OUT && count($value) === 2){
+					$params[$key][] = SQLSRV_PHPTYPE_INT;/* SQLSRV only returns integers (unless blah blah blah, never ever use OUTPUT parameters in SQL besides RETURN) */
 				}
 			} else {
 				$params[$key] = [$value, SQLSRV_PARAM_IN];
