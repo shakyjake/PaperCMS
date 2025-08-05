@@ -1,0 +1,14 @@
+[
+	{
+		"type": "text",
+		"label": "Search",
+		"name": "q",
+		"id": "search",
+		"required": true,
+		"max-length": 64
+	},
+	{
+		"type": "submit",
+		"label": "Search"
+	}
+]

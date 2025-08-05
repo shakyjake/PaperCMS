@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Untitled Document</title>
+		<script src="assets/js/load.js"></script>
+		<link rel="stylesheet" href="assets/static/css/admin-1.0.0.css" />
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<style>
+			* {
+				box-sizing: inherit;
+				margin: 0;
+				padding: 0;
+			}
+			
+			:root {
+				--bg: #313037;
+				--bg-light: #3E3D46;
+				--bg-dark: #0E0E10;
+				--fg: #fff;
+				--fg-color: #5A5865;
+				--fg-color-light: #9492A0;
+				--panel-border: #F0EFF1;
+				--input-border: #C2C1C9;
+				--input-border-focus: #0092CB;
+				--red: #c0414b;
+				--red-light: #c85b64;
+				--red-dark: #a43740;
+				--orange: #cf742f;
+				--orange-light: #d99059;
+				--orange-dark: #b7672a;
+				--green: #28af55;
+				--green-light: #30d067;
+				--green-dark: #229649;
+				--blue: #20708a;
+				--blue-light: #298eb0;
+				--blue-dark: #1b5e75;
+			}
+			
+			.body {
+				box-sizing: border-box;
+				display: grid;
+				gap: 2.7em;
+				grid-template-areas:
+					"a a"
+					"b c"
+					"d d";
+				grid-template-columns: 1fr 3fr;
+				grid-template-rows: repeat(3, auto);
+				padding: 2.7em;
+			}
+			.header, .aside, .main, .footer {
+				background: #f0f0f0;
+				padding: 2.7em;
+			}
+			
+			.header { grid-area: a }
+			.aside { grid-area: b }
+			.main { grid-area: c }
+			.footer { grid-area: d }
+			
+			.builder {
+				display: grid;
+				gap: 1.35em;
+				grid-auto-rows: 6.3em;
+				grid-template-columns: repeat(auto-fill, 6.3em);
+			}
+			
+			.builder__block {
+				align-items: center;
+				aspect-ratio: 1;
+				background: #fff9;
+				background: linear-gradient(#fff9, #fff6);
+				backdrop-filter: blur(3px);
+				border: 1px solid #CCC;
+				border-radius: 0.25em;
+				cursor: pointer;
+				cursor: grab;
+				display: flex;
+				flex-direction: column;
+				font-size: 2em;
+				height: 3.15em;
+				justify-content: center;
+				text-align: center;
+				width: 3.15em;
+			}
+			
+			.block {
+				margin: 1.35em;
+				position: relative;
+			}
+			
+			.block__toolbar {
+				align-items: flex-end;
+				background: var(--bg);
+				color: var(--fg);
+				display: flex;
+				justify-content: flex-start
+			}
+			
+			.block__toolbar .form__field {
+				align-items: center;
+				align-self: center;
+				display: flex;
+				flex-wrap: nowrap;
+				font-size: 0.65em;
+				justify-content: flex-start;
+				padding: 0 0.9em;
+			}
+			
+			.block__toolbar .form__field label {
+				color: #fff;
+				padding: 0 0.675em 0 0;
+			}
+			
+			.block__content {
+				background: #CCC;
+				padding: 1.35em;
+				position: relative;
+			}
+			
+			.block__button {
+				border: none;
+				border-radius: 0;
+				color: #fff;
+				cursor: pointer;
+				flex: 0 0 2.7em;
+				line-height: 1.8;
+				padding: 0.45em 0;
+				text-align: center;
+			}
+			
+			.block__button--remove {
+				background: var(--red);
+				margin-left: auto;
+			}
+			
+			.block__button--remove:hover {
+				background: var(--red-light);
+			}
+			
+			.block__button--remove:active {
+				background: var(--red-dark);
+			}
+			
+			.grid {
+				--min-width: 15em;
+				--max-width: 1fr;
+				display: grid;
+				gap: 1.35em;
+				grid-auto-rows: auto;
+				grid-template-columns: repeat(auto-fill, minmax(var(--min-width), var(--max-width)));
+			}
+			
+			.grid__item {
+				border: 1px dotted #000;
+				min-height: 5.4em;
+			}
+			
+			.ui-sortable-placeholder {
+				background: #09c6;
+				border: 1px solid #09c;
+				border-radius: 0;
+				box-shadow: 0 0 0.9em #09c;
+				box-sizing: border-box;
+				font-size: 1em;
+				margin: 1.35em;
+				min-height: 100px;
+				opacity: 0.4;
+				padding: 1.35em;
+				visibility: visible !important;
+				width: calc(100% - 2.7em);
+			}
+
+			.picsum {
+				height: 270px;
+				width: 360px;
+			}
+			
+		</style>
+	</head>
+	<body class="body">
+		<header role="banner" class="header" id="header">Header</header>
+		<aside role="complementary" class="aside builder" id="aside">
+			<div class="ui-draggable builder__block builder__block--text" data-block="text"><i class="fa-solid fa-font"></i></div>
+			<div class="ui-draggable builder__block builder__block--rich-text" data-block="rich-text"><i class="fa-solid fa-code"></i></div>
+			<div class="ui-draggable builder__block builder__block--image" data-block="image"><i class="fa-solid fa-image"></i></div>
+			<div class="ui-draggable builder__block builder__block--grid" data-block="grid"><i class="fa-solid fa-grip"></i></div>
+			<div class="ui-draggable builder__block builder__block--embed" data-block="embed"><i class="fa-solid fa-icons"></i></div>
+		</aside>
+		<main role="main" class="main" id="main">
+			
+			<h2>Editor area:</h2>
+		
+			<div class="ui-droppable ui-sortable">
+				
+				<div class="block block__row">
+					<div class="block__toolbar">
+						<button class="block__button block__button--remove"><i class="fa-solid fa-trash-can"></i></button>
+						<button class="block__button block__button--move ui-handle ui-sortable-handle"><i class="fa-solid fa-arrows-up-down"></i></button>
+					</div> 
+					<div class="block__content">Existing content 1</div>
+				</div>
+				
+				<div class="block block__row">
+					<div class="block__toolbar">
+						<button class="block__button block__button--remove"><i class="fa-solid fa-trash-can"></i></button>
+						<button class="block__button block__button--move ui-handle ui-sortable-handle"><i class="fa-solid fa-arrows-up-down"></i></button>
+					</div> 
+					<div class="block__content">Existing content 2</div>
+				</div>
+				
+				<div class="block block__row">
+					<div class="block__toolbar">
+						<button class="block__button block__button--remove"><i class="fa-solid fa-trash-can"></i></button>
+						<button class="block__button block__button--move ui-handle ui-sortable-handle"><i class="fa-solid fa-arrows-up-down"></i></button>
+					</div> 
+					<div class="block__content">Existing content 3</div>
+				</div>
+				
+			</div>
+		
+		</main>
+		<script defer src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+		<script defer src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+		<script defer src="assets/js/page-builder.js"></script>
+	</body>
+</html>

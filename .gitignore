@@ -1,0 +1,5 @@
+*.code-workspace
+web.config
+.vscode
+logs/*
+config.xml

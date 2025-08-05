@@ -1,0 +1,50 @@
+{
+	"css" : [
+		{
+			"url" : "/media/css/styles.css",
+			"media" : "all",
+			"inline" : true,
+			"priority" : 10
+		},
+		{
+			"url" : "/media/css/styles-mobile.css",
+			"media" : "all",
+			"inline" : false,
+			"priority" : 20
+		},
+		{
+			"url" : "/media/css/styles-tablet.css",
+			"media" : "(min-width: 768px)",
+			"inline" : false,
+			"priority" : 30
+		},
+		{
+			"url" : "/media/css/styles-desktop.css",
+			"media" : "(min-width: 1024px)",
+			"inline" : false,
+			"priority" : 40
+		},
+		{
+			"url" : "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/solid.min.css",
+			"media" : "all",
+			"hash" : "sha512-/r+0SvLvMMSIf41xiuy19aNkXxI+3zb/BN8K9lnDDWI09VM0dwgTMzK7Qi5vv5macJ3VH4XZXr60ip7v13QnmQ==",
+			"inline" : false,
+			"priority" : 50
+		}
+	],
+	"js" : [],
+	"content" : [
+		{
+			"type" : "container",
+			"node_name" : "div",
+			"class" : "wrap cls",
+			"children" : [
+				{
+					"type" : "rich-text",
+					"class" : "content",
+					"content" : "{{DATA(content_0)}}"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,301 @@
+{
+    "id": 1,
+    "slug": null,
+    "url": "\/404",
+    "name": "Page Not Found",
+    "template_id": 1,
+    "parent_id": 1,
+    "type": "error",
+    "meta": [
+        {
+            "id": 1,
+            "tag_name": "meta",
+            "attributes": {
+                "charset": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 1,
+                    "attribute_id": 1,
+                    "attribute_name": "charset",
+                    "value": null,
+                    "default_value": "utf-8"
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 2,
+            "tag_name": "title",
+            "attributes": [],
+            "value": null,
+            "default_value": "{{PAGE.NAME}} | {{CONFIG(SiteName)}}"
+        },
+        {
+            "id": 3,
+            "tag_name": "meta",
+            "attributes": {
+                "name": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 3,
+                    "attribute_id": 2,
+                    "attribute_name": "name",
+                    "value": null,
+                    "default_value": "description"
+                },
+                "value": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 3,
+                    "attribute_id": 3,
+                    "attribute_name": "value",
+                    "value": null,
+                    "default_value": null
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 4,
+            "tag_name": "meta",
+            "attributes": {
+                "name": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 4,
+                    "attribute_id": 4,
+                    "attribute_name": "name",
+                    "value": null,
+                    "default_value": "viewport"
+                },
+                "value": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 4,
+                    "attribute_id": 5,
+                    "attribute_name": "value",
+                    "value": null,
+                    "default_value": "width=device-width, initial-scale=1"
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 5,
+            "tag_name": "meta",
+            "attributes": {
+                "property": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 5,
+                    "attribute_id": 6,
+                    "attribute_name": "property",
+                    "value": null,
+                    "default_value": "og:title"
+                },
+                "content": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 5,
+                    "attribute_id": 7,
+                    "attribute_name": "content",
+                    "value": null,
+                    "default_value": null
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 6,
+            "tag_name": "meta",
+            "attributes": {
+                "property": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 6,
+                    "attribute_id": 8,
+                    "attribute_name": "property",
+                    "value": null,
+                    "default_value": "og:url"
+                },
+                "content": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 6,
+                    "attribute_id": 9,
+                    "attribute_name": "content",
+                    "value": null,
+                    "default_value": "{{PAGE.URL}}"
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 7,
+            "tag_name": "meta",
+            "attributes": {
+                "property": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 7,
+                    "attribute_id": 10,
+                    "attribute_name": "property",
+                    "value": null,
+                    "default_value": "og:image"
+                },
+                "content": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 7,
+                    "attribute_id": 11,
+                    "attribute_name": "content",
+                    "value": null,
+                    "default_value": null
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 8,
+            "tag_name": "meta",
+            "attributes": {
+                "property": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 8,
+                    "attribute_id": 12,
+                    "attribute_name": "property",
+                    "value": null,
+                    "default_value": "og:image:width"
+                },
+                "content": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 8,
+                    "attribute_id": 13,
+                    "attribute_name": "content",
+                    "value": null,
+                    "default_value": null
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 9,
+            "tag_name": "meta",
+            "attributes": {
+                "property": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 9,
+                    "attribute_id": 14,
+                    "attribute_name": "property",
+                    "value": null,
+                    "default_value": "og:image:height"
+                },
+                "content": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 9,
+                    "attribute_id": 15,
+                    "attribute_name": "content",
+                    "value": null,
+                    "default_value": null
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 10,
+            "tag_name": "meta",
+            "attributes": {
+                "property": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 10,
+                    "attribute_id": 17,
+                    "attribute_name": "property",
+                    "value": null,
+                    "default_value": "og:description"
+                },
+                "content": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 10,
+                    "attribute_id": 18,
+                    "attribute_name": "content",
+                    "value": null,
+                    "default_value": null
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 11,
+            "tag_name": "meta",
+            "attributes": {
+                "property": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 11,
+                    "attribute_id": 19,
+                    "attribute_name": "property",
+                    "value": null,
+                    "default_value": "og:type"
+                },
+                "content": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 11,
+                    "attribute_id": 20,
+                    "attribute_name": "content",
+                    "value": null,
+                    "default_value": "website"
+                }
+            },
+            "value": "",
+            "default_value": ""
+        },
+        {
+            "id": 12,
+            "tag_name": "link",
+            "attributes": {
+                "rel": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 12,
+                    "attribute_id": 21,
+                    "attribute_name": "rel",
+                    "value": null,
+                    "default_value": "canonical"
+                },
+                "href": {
+                    "id": null,
+                    "page_id": 1,
+                    "meta_id": 12,
+                    "attribute_id": 22,
+                    "attribute_name": "href",
+                    "value": null,
+                    "default_value": "{{PAGE.URL}}"
+                }
+            },
+            "value": "",
+            "default_value": ""
+        }
+    ],
+    "css": [],
+    "js": [],
+    "data": {
+        "content_0": "<h1>404<\/h1><h2>Page not found<\/h2><p class=\"intro\">Sorry, the page your requested could not be found.<\/p>"
+    },
+    "body": []
+}

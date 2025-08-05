@@ -1,0 +1,48 @@
+[
+	{
+		"type" : "container",
+		"node_name" : "footer",
+		"attributes" : {
+			"id" : "footer"
+		},
+		"class" : "footer wrap cls",
+		"children" : [
+			{
+				"type" : "flex",
+				"class" : "footer",
+				"children" : [
+					{
+						"type" : "flex-item",
+						"class" : "logo",
+						"children" : [
+							{
+								"type" : "rich-text",
+								"content" : "<p><a href=\"/\">ACME inc.</a></p>"
+							}
+						]
+					},
+					{
+						"type" : "flex-item",
+						"class" : "nav",
+						"children" : [
+							{
+								"type" : "menu",
+								"menu_id" : 1
+							}
+						]
+					},
+					{
+						"type" : "flex-item",
+						"class" : "tel",
+						"children" : [
+							{
+								"type" : "rich-text",
+								"content" : "<p>+441234 567 890</p>"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]

@@ -1,0 +1,133 @@
+{
+	"css" : [
+		{
+			"url" : "/media/css/admin-1.0.0.css",
+			"media" : "all",
+			"inline" : true,
+			"priority" : 200
+		},
+		{
+			"url" : "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/solid.min.css",
+			"media" : "all",
+			"hash" : "sha512-/r+0SvLvMMSIf41xiuy19aNkXxI+3zb/BN8K9lnDDWI09VM0dwgTMzK7Qi5vv5macJ3VH4XZXr60ip7v13QnmQ==",
+			"inline" : false,
+			"priority" : 250
+		}
+	],
+	"js" : [
+		{
+			"url" : "/media/js/admin.js",
+			"priority" : 100
+		}
+	],
+	"content" : [
+		{
+			"type" : "container",
+			"node_name" : "",
+			"children" : [
+				{
+					"type" : "container",
+					"node_name" : "aside",
+					"class" : "sidebar",
+					"attributes" : {
+						"aria-expanded" : "false"
+					},
+					"children" : [
+						{
+							"type" : "button",
+							"class" : "sidebar sidebar__toggle",
+							"label" : "Toggle sidebar"
+						},
+						{
+							"type" : "menu",
+							"menu_id" : 2
+						}
+					]
+				},
+				{
+					"type" : "container",
+					"node_name" : "header",
+					"class" : "header",
+					"attributes" : {
+						"id" : "header"
+					},
+					"children" : [
+						{
+							"type" : "container",
+							"node_name" : "h1",
+							"class" : "header__title",
+							"children" : [
+								{
+									"type" : "text",
+									"content" : "{{PAGE.NAME}}"
+								}
+							]
+						},
+						{
+							"type" : "container",
+							"node_name" : "div",
+							"class" : "user",
+							"children" : [
+								{
+									"type" : "container",
+									"node_name" : "div",
+									"class" : "user__name",
+									"children" : [
+										{
+											"type" : "text",
+											"content" : "{{USER.NAME}}"
+										}
+									]
+								},
+								{
+									"type" : "container",
+									"node_name" : "div",
+									"class" : "user__image",
+									"children" : [
+										{
+											"type" : "image",
+											"class" : "user",
+											"src" : "{{USER.IMG}}",
+											"width" : 80,
+											"height" : 80,
+											"alt" : "{{USER.NAME}}"
+										}
+									]
+								},
+								{
+									"type" : "link",
+									"href" : "/log-out",
+									"class" : "logout user",
+									"children" : [
+										{
+											"type" : "container",
+											"node_name" : "span",
+											"class" : "screen-reader-text",
+											"children" : [
+												{
+													"type" : "text",
+													"content" : "Log out"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"type" : "container",
+					"node_name" : "div",
+					"class" : "admin",
+					"children" : [
+						{
+							"type" : "text",
+							"content" : "{{PAGE.CONTENT}}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

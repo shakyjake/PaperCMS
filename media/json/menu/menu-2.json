@@ -1,0 +1,37 @@
+{
+	"menu_id" : 1,
+	"name" : "admin",
+	"class_modifier" : "sidebar",
+	"children" : [
+		{
+			"page_id" : "2",
+			"label" : "Dashboard",
+			"uri" : "\/admin",
+			"icon" : "\\f624"
+		},
+		{
+			"page_id" : "10",
+			"label" : "Pages",
+			"uri" : "\/admin\/pages",
+			"icon" : "\\f15c"
+		},
+		{
+			"page_id" : "11",
+			"label" : "Menus",
+			"uri" : "\/admin\/menus",
+			"icon" : "\\f550"
+		},
+		{
+			"page_id" : "12",
+			"label" : "Media",
+			"uri" : "\/admin\/media",
+			"icon" : "\\f083"
+		},
+		{
+			"page_id" : "13",
+			"label" : "Users",
+			"uri" : "\/admin\/users",
+			"icon" : "\\f0c0"
+		}
+	]
+}

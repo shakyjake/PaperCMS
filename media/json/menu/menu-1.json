@@ -1,0 +1,17 @@
+{
+	"menu_id" : 1,
+	"name" : "header",
+	"class_modifier" : "header",
+	"children" : [
+		{
+			"page_id" : "1",
+			"label" : "Home",
+			"uri" : "/"
+		},
+		{
+			"page_id" : "3",
+			"label" : "Log In",
+			"uri" : "/login"
+		}
+	]
+}
