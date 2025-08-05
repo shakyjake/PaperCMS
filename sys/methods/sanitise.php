@@ -57,7 +57,7 @@ function sanitise_slug(string $value) : string {
  * @param string $value [required] The variable to check
  * @return string
 */
-function sanitise_filename(string $value) : string {
+function sanitise_filename(string $value) : ?string {
 	
 	if(!isset($value)){
 		return '';
@@ -81,13 +81,13 @@ function sanitise_filename(string $value) : string {
  * @param string $value [required] The variable to check
  * @return string
 */
-function sanitise_float(string $value) : string {
+function sanitise_float(string $value) : ?string {
 
 	if(!is_string($value)){
 		$value = (string)$value;
 	}
 
-	if(regex_test('/^(?:\-)?\d+(?:\.\d+)?$/', $value)){
+	if(regex_test('^(?:\-)?\d+(?:\.\d+)?$', $value)){
 		return $value;
 	}
 	
@@ -100,13 +100,13 @@ function sanitise_float(string $value) : string {
  * @param string $value [required] The variable to check
  * @return string
 */
-function sanitise_int(string $value) : string {
+function sanitise_int(string $value) : ?string {
 
 	if(!is_string($value)){
 		$value = (string)$value;
 	}
 
-	if(regex_test('/^(?:\-)?\d+$/', $value)){
+	if(regex_test('^(?:\-)?\d+$', $value)){
 		return $value;
 	}
 	
@@ -119,7 +119,7 @@ function sanitise_int(string $value) : string {
  * @param string $value [required] The variable to check
  * @return string
 */
-function sanitise_ajax_path(string $value) : string {
+function sanitise_ajax_path(string $value) : ?string {
 
 	if(empty($value)){
 		return null;
@@ -128,7 +128,7 @@ function sanitise_ajax_path(string $value) : string {
 	$value = strtolower($value);
 	$value = str_replace('-', '_', $value);
 
-	if(regex_test('/[^\da-z\_]/', $value)){
+	if(regex_test('[^\da-z\_]', $value)){
 		return null;
 	}
 	
@@ -141,13 +141,13 @@ function sanitise_ajax_path(string $value) : string {
  * @param string $value [required] The variable to check
  * @return string
 */
-function sanitise_guid(string $value) : string {
+function sanitise_guid(string $value) : ?string {
 
 	if(!is_string($value)){
 		$value = (string)$value;
 	}
 
-	if(regex_test('/^\{?[\da-f]{8}\-[\da-f]{4}\-[\da-f]{4}\-[\da-f]{4}\-[\da-f]{12}\}?$/i', $value)){
+	if(regex_test('^\{?[\da-f]{8}\-[\da-f]{4}\-[\da-f]{4}\-[\da-f]{4}\-[\da-f]{12}\}?$', $value)){
 		return $value;
 	}
 	

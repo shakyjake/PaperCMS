@@ -10,7 +10,7 @@ class MetaTag {
 	public $attributes = null;
 	
 	function name_valid(){
-		if(regex_test('/^[a-z][\da-z\:\-]+[a-z][\da-z\-]*$/', $this->name)){
+		if(regex_test('^[a-z][\da-z\:\-]+[a-z][\da-z\-]*$', $this->name)){
 			return true;
 		}
 		return false;
@@ -52,7 +52,7 @@ class MetaAttribute {
 	public $fixed = null;
 	
 	function name_valid(){
-		if(regex_test('/^[a-z][\da-z\:\-]+[a-z][\da-z\-]*$/', $this->name)){
+		if(regex_test('^[a-z][\da-z\:\-]+[a-z][\da-z\-]*$', $this->name)){
 			return true;
 		}
 		return false;
