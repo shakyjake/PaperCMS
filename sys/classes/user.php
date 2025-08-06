@@ -2,18 +2,18 @@
 
 class User {
 	
-	public $id = null;
-	public $data = null;
-	public $login_token = null;
-	private $group = 1;
-	public $email_address = null;
-	public $phone_number = null;
-	public $user_name = null;
-	public $password = null;
-	public $profile_picture = null;
-	public $csrf_salt = null;
-	private $guest_mode = false;
-	private $data_loaded = false;
+	public ?int $id = null;
+	public ?array $data = null;
+	public ?string $login_token = null;
+	private ?int $group = 1;
+	public ?string $email_address = null;
+	public ?string $phone_number = null;
+	public ?string $user_name = null;
+	public ?string $password = null;
+	public ?string $profile_picture = null;
+	public ?string $csrf_salt = null;
+	private bool $guest_mode = false;
+	private bool $data_loaded = false;
 
 	function imitate_guest(?bool $guest_mode = true){
 
@@ -65,9 +65,11 @@ class User {
 
 		$this->data_loaded = true;
 
-		$RS = get_records('userData_List', [
+		$params = [
 			$this->id
-		]);
+		];
+
+		$RS = get_records('userData_List', $params);
 
 		while(!$RS->eof){
 			$this->data[$RS->row['DataKey']] = $RS->row['DataValue'];
@@ -118,19 +120,21 @@ class User {
 
 		if(empty($this->login_token)){
 		
-			if(!has_value($this->user_name) || !has_value($this->password)){
+			if(empty($this->user_name) || empty($this->password)){
 				return false;
 			}
 			
-			$RS = get_records('user_Detail_Login', $this->user_name);
+			$RS = get_records('user_Detail_Login', [
+				$this->user_name
+			]);
 
 			while(!$RS->eof){
 			
 				if(password_verify($this->password, $RS->row['Password'])){
 	
 					$this->profile_picture = sprintf('https://www.gravatar.com/avatar/%1$s?s=80', hash('sha256', $RS->row['EmailAddress']));
-					$this->group = $RS->row['UserGroupId'];
-					$this->id = $RS->row['UserId'];
+					$this->group = (int)$RS->row['UserGroupId'];
+					$this->id = (int)$RS->row['UserId'];
 	
 					foreach($RS->row as $key => $value){
 						if(in_array($key, $hidden_fields)){
@@ -302,7 +306,7 @@ class UserData {
 		]);
 	}
 	
-	function __construct(int $user_id, int $user_data_id = null, string $name = null, string $value = null, bool $encrypted = false){
+	function __construct(int $user_id, ?int $user_data_id = null, ?string $name = null, ?string $value = null, ?bool $encrypted = false){
 		if(empty($user_id)){
 			throw new Exception('User Data must have an associated User.');
 		}
@@ -353,6 +357,7 @@ function user_login(){
 		$persist_login = ($_POST['persist_login'] === '1');
 	}
 
+	$current_user->login_token = null;
 	$current_user->user_name = $_POST['email'];
 	$current_user->password = $_POST['password'];
 

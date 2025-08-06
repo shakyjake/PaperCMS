@@ -286,7 +286,7 @@ function template_parse_assoc(string $html, string $tag_name, array $data){
 
 		$loops += 1;
 		if($loops > 10){
-			throw new Exception(sprintf(
+			throw new \Exception(sprintf(
 				'Infinite recursion occurred while parsing an associated array for %1$s tags. Parsed: %2$s',
 				$tag_name,
 				implode(', ', array_keys($parsed))

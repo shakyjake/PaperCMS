@@ -131,9 +131,9 @@ class ThingData {
 		]);
 	}
 	
-	function __construct(int $thing_id, int $thing_data_id = null, string $name = null, string $value = null){
+	function __construct(int $thing_id, ?int $thing_data_id = null, ?string $name = null, ?string $value = null){
 		if(empty($thing_id)){
-			throw new Exception('Thing Data must have an associated Thing.');
+			throw new \Exception('Thing Data must have an associated Thing.');
 		}
 		$this->id = $thing_data_id;
 		$this->thing_id = $thing_id;

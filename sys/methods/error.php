@@ -47,17 +47,17 @@
 
 		try {
 
-			//if(do_check(config('Errors/Display'), false)){ 
+			if(do_check(config('Errors/Display'), false)){ 
 				error_write($error_number, $error_msg, $error_file, $error_line, $stack_trace, $error_is_fatal);
-			//}
+			}
 
-			//if(do_check(config('Errors/Log'), true)){ 
+			if(do_check(config('Errors/Log'), true)){ 
 				error_log_db($error_number, $error_msg, $error_file, $error_line, $stack_trace, $error_is_fatal);
-			//}
+			}
 
-			//if(do_check(config('Errors/Notify'), false)){ 
+			if(do_check(config('Errors/Notify'), false)){ 
 				error_notify($error_number, $error_msg, $error_file, $error_line, $stack_trace, $error_is_fatal);
-			//}
+			}
 
 		} catch(Exception $e){
 
@@ -89,7 +89,7 @@
 	 */
 	function error_log_local($error_number = null, $error_msg = '', $error_file = null, $error_line = null, $stack_trace = array(), $error_is_fatal = false){
 
-		$now = new DateTime();
+		$now = new \DateTime();
 
 		$log_file = map_path(config_path('Log')) . '/' . date_format($now, 'Y-m-d') . '.txt';
 
@@ -123,8 +123,6 @@
 
 		$out->add($_SERVER['HTTP_USER_AGENT']);
 
-		echo $log_file;
-
 		file_put_contents($log_file, $out->dump(), FILE_APPEND);
 
 		$out = null;
@@ -145,14 +143,16 @@
 	function error_log_db($error_number = null, $error_msg = '', $error_file = null, $error_line = null, $stack_trace = array(), $error_is_fatal = false){
 
 		try {
-			
-			execute_sql('errorLog_Save', [
+
+			$params = [
 				null,
 				$error_file,
 				$error_line,
 				$error_msg,
 				print_r($stack_trace, true)
-			]);
+			];
+			
+			execute_sql('errorLog_Save', $params);
 
 		} catch(Exception $exception){
 

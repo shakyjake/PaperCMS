@@ -80,7 +80,7 @@ class ActionCallback {
 
 	function process(...$parameters){
 		if(!is_callable($this->action)){
-			throw new Exception(sprintf('ActionCallback: action %1$s is not callable', $this->action));
+			throw new \Exception(sprintf('ActionCallback: action %1$s is not callable', $this->action));
 		}
 		call_user_func($this->action, ...$this->params, ...$parameters);
 	}

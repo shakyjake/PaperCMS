@@ -17,9 +17,12 @@ class Page {
 	public $meta_loaded = false;
 	
 	function data_load(){
-		$RS = get_records('pageData_List', [
+
+		$params = [
 			$this->id
-		]);
+		];
+		
+		$RS = get_records('pageData_List', $params);
 		if(!$RS->eof){
 			$this->data_loaded = true;
 			while(!$RS->eof){
@@ -181,26 +184,29 @@ class Page {
 	}
 
 	function save(){
-		execute_sql('page_Save', [
+		$params = [
 			[&$this->id, SQLSRV_PARAM_OUT],
 			$this->parent_id,
 			$this->type,
 			$this->name,
 			$this->slug,
 			$this->template_id
-		]);
+		];
+		execute_sql('page_Save', $params);
 		$this->json_save();
 	}
 
-	function delete(int $redirect_to = null){
+	function delete(?int $redirect_to = null){
 
 		global $current_user;
 
-		execute_sql('page_Delete', [
+		$params = [
 			[&$this->id, SQLSRV_PARAM_OUT],
 			$current_user->id,
 			$redirect_to
-		]);
+		];
+
+		execute_sql('page_Delete', $params);
 
 		if($this->id === 0){
 			throw new Exception('User with insufficient permissions attempted to delete page.');
@@ -245,9 +251,12 @@ class Page {
 	}
 	
 	function meta_load(){
-		$RS = get_records('pageMeta_List', [
+
+		$params = [
 			$this->id
-		]);
+		];
+		$RS = get_records('pageMeta_List', $params);
+
 		if(!$RS->eof){
 			$this->meta_loaded = true;
 			while(!$RS->eof){
@@ -286,10 +295,11 @@ class Page {
 			$this->load($load_data);
 
 		} else {
-			$RS = get_records('page_Detail_Public', [
+			$params = [
 				$url,
 				$current_user->id
-			]);
+			];
+			$RS = get_records('page_Detail_Public', $params);
 			if($RS->eof){
 				http_response_code(404);
 				if(accept_html() && option('404_page_id')){
@@ -310,10 +320,12 @@ class Page {
 
 		global $current_user;
 
-		$RS = get_records('page_Detail', [
+		$params = [
 			$this->id,
 			$current_user->id
-		]);
+		];
+		$RS = get_records('page_Detail', $params);
+
 		if(!$RS->eof){
 			$this->load_from_rs($RS);
 			if($load_data){
@@ -449,7 +461,7 @@ class Page {
 
 	}
 	
-	function __construct(int $id = null, int $parent_id = null, string $type = null, string $name = null, string $slug = null, int $template_id = null){
+	function __construct(?int $id = null, ?int $parent_id = null, ?string $type = null, ?string $name = null, ?string $slug = null, ?int $template_id = null){
 		$this->id = $id;
 		$this->parent_id = $parent_id;
 		$this->type = $type;
@@ -485,12 +497,13 @@ class PageData {
 	public $value = null;
 	
 	function save(){
-		execute_sql('pageData_Save', [
+		$params = [
 			[$this->id, SQLSRV_PARAM_OUT],
 			$this->page_id,
 			$this->name,
 			$this->value
-		]);
+		];
+		execute_sql('pageData_Save', $params);
 	}
 	
 	function load(){
@@ -507,14 +520,15 @@ class PageData {
 	}
 
 	function delete(){
-		execute_sql('pageData_Delete', [
+		$params = [
 			$this->id
-		]);
+		];
+		execute_sql('pageData_Delete', $params);
 	}
 	
-	function __construct(int $page_id, int $page_data_id = null, string $name = null, mixed $value = null){
+	function __construct(int $page_id, ?int $page_data_id = null, ?string $name = null, mixed $value = null){
 		if(empty($page_id)){
-			throw new Exception('Page Data must have an associated Page.');
+			throw new \Exception('Page Data must have an associated Page.');
 		}
 		$this->id = $page_data_id;
 		$this->page_id = $page_id;
@@ -559,17 +573,19 @@ class PageMeta {
 
 		global $current_user;
 
-		execute_sql('pageMeta_Save', [
+		$params = [
 			[$this->id, SQLSRV_PARAM_OUT],
 			$this->page_id,
 			$this->meta_id,
 			$this->attribute_id,
 			$this->value,
 			$current_user->id
-		]);
+		];
+
+		execute_sql('pageMeta_Save', $params);
 
 		if($this->id === 0){
-			throw new Exception('User with insufficient permissions attempted to save page meta.');
+			throw new \Exception('User with insufficient permissions attempted to save page meta.');
 		}
 
 	}
@@ -627,7 +643,7 @@ function page_save(){
 	$slug = do_form('slug');
 	$template_id = do_form('template_id');
 
-	$RS = get_records('page_Save', [
+	$params = [
 		$id,
 		$parent_id,
 		$type,
@@ -635,7 +651,9 @@ function page_save(){
 		$slug,
 		$template_id,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('page_Save', $params);
 	
 	$response->rs_add($RS, 403);
 
@@ -656,10 +674,12 @@ function page_remove(){
 
 	$id = do_form('id');
 
-	$RS = get_records('page_Remove', [
+	$params = [
 		$id,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('page_Remove', $params);
 	
 	$response->rs_add($RS, 403);
 
@@ -680,10 +700,12 @@ function page_list(){
 
 	$id = do_form('id', '0');
 
-	$RS = get_records('page_List', [
+	$params = [
 		$id,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('page_List', $params);
 	
 	$response->rs_add($RS, 403);
 
@@ -770,14 +792,16 @@ function page_search_admin(){
 	$page = do_form('pagination_page', 1);
 	$per_page = do_form('pagination_per_page', 25);
 
-	$RS = get_records('page_Search_Admin', [
+	$params = [
 		$parent_id,
 		$search,
 		$type,
 		$current_user->id,
 		$page,
 		$per_page
-	]);
+	];
+
+	$RS = get_records('page_Search_Admin', $params);
 
 	$response->pagination = new Pagination('/ajax/page/search-admin', $RS, $page, $per_page);
 
@@ -826,14 +850,16 @@ function page_search(){
 	$page = do_form('pagination_page', 1);
 	$per_page = do_form('pagination_per_page', 25);
 
-	$RS = get_records('page_Search', [
+	$params = [
 		$parent_id,
 		$search,
 		$type,
 		$current_user->id,
 		$page,
 		$per_page
-	]);
+	];
+
+	$RS = get_records('page_Search', $params);
 
 	if(!$RS->eof){
 
@@ -873,10 +899,12 @@ function page_detail(){
 
 	$id = do_form('id');
 
-	$RS = get_records('page_Detail', [
+	$params = [
 		$id,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('page_Detail', $params);
 	
 	$response->rs_add($RS, 403);
 
@@ -897,10 +925,12 @@ function page_detail_admin(){
 
 	$id = do_form('id');
 
-	$RS = get_records('page_Detail_Admin', [
+	$params = [
 		$id,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('page_Detail_Admin', $params);
 
 	if($RS->eof){
 
@@ -954,13 +984,15 @@ function page_detail_admin(){
 			'0' => 'None'
 		];
 
-		$templates_rs = get_records('thing_Search', [
+		$params = [
 			null,
 			null,
 			'template',
 			1,
 			999
-		]);
+		];
+
+		$templates_rs = get_records('thing_Search', $params);
 	
 		while(!$templates_rs->eof){
 	
@@ -978,9 +1010,11 @@ function page_detail_admin(){
 
 		$flex = new Flex('detail');
 
-		$users_rs = get_records('userGroup_List', [
+		$params = [
 			$current_user->id
-		]);
+		];
+
+		$users_rs = get_records('userGroup_List', $params);
 
 		$user_options = [];
 		
@@ -989,10 +1023,12 @@ function page_detail_admin(){
 			$users_rs->move_next();
 		}
 
-		$permissions_rs = get_records('pagePermissions_List', [
+		$params = [
 			$RS->row['PageId'],
 			$current_user->id
-		]);
+		];
+
+		$permissions_rs = get_records('pagePermissions_List', $params);
 
 		if(!$permissions_rs->eof){
 
@@ -1013,10 +1049,12 @@ function page_detail_admin(){
 			$flex->append($flex_item);
 		}
 
-		$meta_rs = get_records('pageMeta_List_Admin', [
+		$params = [
 			$RS->row['PageId'],
 			$current_user->id
-		]);
+		];
+
+		$meta_rs = get_records('pageMeta_List_Admin', $params);
 
 		if(!$meta_rs->eof){
 
@@ -1065,13 +1103,15 @@ function page_data_save(){
 	$data_key = do_form('data_key');
 	$data_value = do_form('data_value');
 
-	$RS = get_records('pageData_Save', [
+	$params = [
 		$id,
 		$page_id,
 		$data_key,
 		$data_value,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('pageData_Save', $params);
 
 	$response->rs_add($RS, 403);
 
@@ -1094,12 +1134,14 @@ function page_data_remove(){
 	$page_id = do_form('page_id');
 	$data_key = do_form('data_key');
 
-	$RS = get_records('pageData_Remove', [
+	$params = [
 		$id,
 		$page_id,
 		$data_key,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('pageData_Remove', $params);
 
 	$response->rs_add($RS, 403);
 
@@ -1120,10 +1162,12 @@ function page_data_list(){
 
 	$page_id = do_form('id', '0');
 
-	$RS = get_records('pageData_List', [
+	$params = [
 		$page_id,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('pageData_List', $params);
 
 	$response->rs_add($RS, 403);
 
@@ -1146,12 +1190,14 @@ function page_data_detail(){
 	$page_id = do_form('page_id');
 	$data_key = do_form('data_key');
 
-	$RS = get_records('pageData_Detail', [
+	$params = [
 		$id,
 		$page_id,
 		$data_key,
 		$current_user->id
-	]);
+	];
+
+	$RS = get_records('pageData_Detail', $params);
 
 	$response->rs_add($RS, 403);
 

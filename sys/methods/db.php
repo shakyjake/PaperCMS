@@ -92,9 +92,9 @@
 
 		if($connection === false){
 			if($_SERVER['REMOTE_HOST'] === '90.254.143.106'){
-				throw new Exception('get_connection(); Unable to connect to database \'' . $conn_string['options']['Database'] . '\' with provided credentials: ' . print_r($conn_string, true));
+				throw new \Exception('get_connection(); Unable to connect to database \'' . $conn_string['options']['Database'] . '\' with provided credentials: ' . print_r($conn_string, true));
 			}
-			throw new Exception('get_connection(); Unable to connect to database \'' . $conn_string['options']['Database'] . '\' with provided credentials.');
+			throw new \Exception('get_connection(); Unable to connect to database \'' . $conn_string['options']['Database'] . '\' with provided credentials.');
 		}
 
 		return $connection;
@@ -109,40 +109,14 @@
 	 * @param int $fetch_type [optional] The desired fetch type
 	 * @return RecordSet
 	 */
-	function get_records(string $sql, mixed &$params = null, ?array $options = [], ?int $fetch_type = SQLSRV_FETCH_ASSOC) : RecordSet {
+	function get_records(string $sql, mixed $params = null, ?array $options = [], ?int $fetch_type = SQLSRV_FETCH_ASSOC) : RecordSet {
 
 		if(!is_array($options)){
 			$options = [$options];
 		}
 
-		sql_params_parse($params);
-
-		$proc_params = [];
-
-		if(count($params)){
-
-			foreach($params as $key => $value){
-				if($key === 0 && $params[$key][1] === SQLSRV_PARAM_OUT){
-					$sql = '? = call ' . $sql;
-				} else {
-					if($key === 0){
-						/* not an ouput param but we still need "call" */
-						$sql = 'call ' . $sql;
-					}
-					$proc_params[] = '?';
-				}
-			}
-
-		} else {
-			$sql = 'call ' . $sql;
-		}
-
-
-		$sql = sprintf(
-			'{%1$s(%2$s)}',
-			$sql,
-			implode(', ', $proc_params)
-		);
+		$params = sql_params_parse($params);
+		$sql = sql_text_parse($sql, $params);
 
 		return new RecordSet($sql, $params, $options, $fetch_type);
 
@@ -155,7 +129,7 @@
 	 * @param array $options [optional] The option(s) to be passed to the sqlsrv_query
 	 * @return mixed
 	 */
-	function get_single_value(string $sql, mixed &$params = null, ?array $options = []) : mixed {
+	function get_single_value(string $sql, mixed $params = null, ?array $options = []) : mixed {
 
 		$RS = get_records($sql, $params, $options,  SQLSRV_FETCH_NUMERIC);
 		if($RS->eof){
@@ -172,13 +146,82 @@
 	 * @param array $options [optional] The option(s) to be passed to the sqlsrv_query
 	 * @return bool
 	 */
-	function execute_sql(string $sql, mixed &$params = null, ?array $options = []) : bool {
+	function execute_sql(string $sql, mixed $params = null, ?array $options = []) : bool {
 
-		sql_params_parse($params);
+		$params = sql_params_parse($params);
+		$sql = sql_text_parse($sql, $params);
 
 		if(!is_array($options)){
 			$options = [$options];
 		}
+
+		$connection = get_connection();
+
+		$query = sqlsrv_query($connection, $sql, $params, $options);
+	
+		if($query === false){
+
+			$errors = sqlsrv_errors();
+
+			sqlsrv_close($connection);
+
+			throw new \Exception('Unable to execute query ' . $sql . ': ' . print_r($errors, true));
+
+		}
+
+		sqlsrv_close($connection);
+		
+		return true;
+
+	}
+
+	/**
+	 * Parses parameters for an SQL operation
+	 * @param array $params [optional] The parameter(s) to be passed to the Stored Procedure
+	 * @return array
+	 */
+	function sql_params_parse(mixed $params = null){
+
+		$output_params = [];
+
+		if(empty($params)){
+			$params = [];
+		}
+
+		if(!is_array($params)){
+			$params = [$params];
+		}
+
+		foreach($params as $key => $value){
+
+			$output_params[$key] = [];
+
+			if(is_countable($value)){
+				$output_params[$key][] = &$value[0];
+				if(count($value) === 1){
+					$output_params[$key][] = SQLSRV_PARAM_IN;
+				}
+				if($key === 0 && $value[1] === SQLSRV_PARAM_OUT && count($value) === 2){
+					$output_params[$key][] = SQLSRV_PHPTYPE_INT;/* SQLSRV only returns integers (unless blah blah blah, never ever use OUTPUT parameters in SQL besides RETURN) */
+				}
+			} else {
+				$output_params[$key] = [&$value, SQLSRV_PARAM_IN];
+			}
+		}
+
+		$params = $output_params;
+
+		return $output_params;
+
+	}
+
+	/**
+	 * Creates valid SQL Server call statement from a Stored Procedure name and parameters
+	 * @param string $sql The Stored Procedure name
+	 * @param array $params The parameter(s) to be passed to the Stored Procedure
+	 * @return string
+	 */
+	function sql_text_parse(string $sql, array $params) : string {
 
 		$proc_params = [];
 
@@ -189,7 +232,7 @@
 					$sql = '? = call ' . $sql;
 				} else {
 					if($key === 0){
-						/* no ouput param but we still need "call" */
+						/* no output param but we still need "call" */
 						$sql = 'call ' . $sql;
 					}
 					$proc_params[] = '?';
@@ -206,49 +249,7 @@
 			implode(', ', $proc_params)
 		);
 
-		$connection = get_connection();
-
-		$query = sqlsrv_query($connection, $sql, $params, $options);
-
-		sqlsrv_close($connection);
-	
-		if($query === false){
-			throw new Exception('Unable to execute query ' . $sql . ': ' . print_r(sqlsrv_errors(), true));
-		}
-		
-		return true;
-
-	}
-
-	/**
-	 * Parses parameters for an SQL operation
-	 * @param array $params [optional] The parameter(s) to be passed to the Stored Procedure
-	 * @return undefined
-	 */
-	function sql_params_parse(mixed &$params = null){
-
-		if(empty($params)){
-			$params = [];
-			return;
-		}
-
-		if(!is_array($params)){
-			$params = [$params];
-		}
-
-		foreach($params as $key => $value){
-
-			if(is_countable($value)){
-				if(count($value) === 1){
-					$params[$key][] = SQLSRV_PARAM_IN;
-				}
-				if($key === 0 && $value[1] === SQLSRV_PARAM_OUT && count($value) === 2){
-					$params[$key][] = SQLSRV_PHPTYPE_INT;/* SQLSRV only returns integers (unless blah blah blah, never ever use OUTPUT parameters in SQL besides RETURN) */
-				}
-			} else {
-				$params[$key] = [$value, SQLSRV_PARAM_IN];
-			}
-		}
+		return $sql;
 
 	}
 

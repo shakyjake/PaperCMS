@@ -19,9 +19,11 @@ class RecordSet {
 	
 		if($query === false){
 
+			$errors = sqlsrv_errors();
+
 			sqlsrv_close($connection);
 
-			throw new Exception('Unable to obtain RecordSet for query ' . $sql . ': ' . print_r(sqlsrv_errors(), true));
+			throw new \Exception('Unable to obtain RecordSet for query ' . $sql . ': ' . print_r($errors, true));
 			
 		} else {
 			
@@ -61,7 +63,7 @@ class RecordSet {
 	function move_next(){
 	
 		if($this->index >= count($this->rows)){
-			throw new Exception('move_next(); Recordset for query ' . $this->sql . ' is already eof');
+			throw new \Exception('move_next(); Recordset for query ' . $this->sql . ' is already eof');
 		}
 		
 		$this->index += 1;

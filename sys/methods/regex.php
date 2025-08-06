@@ -24,7 +24,7 @@ function regex_test(string $pattern = '', string $subject = ''){
 
 	if($matched === false){
 		/* PHP continues execution on error here for some stupid reason */
-		throw new Exception('Regex pattern is not a valid Regex: ' . $pattern);
+		throw new \Exception('Regex pattern is not a valid Regex: ' . $pattern);
 	}
 
 	return false;
@@ -96,7 +96,7 @@ function regex_match(string $pattern = '', string $subject = ''){
 
 	if($matched === false){
 		/* PHP continues execution on error here for some stupid reason */
-		throw new Exception('Regex pattern is not a valid Regex: ' . $pattern);
+		throw new \Exception('Regex pattern is not a valid Regex: ' . $pattern);
 	}
 
 	return $matches;

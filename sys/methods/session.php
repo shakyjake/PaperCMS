@@ -44,7 +44,7 @@ function session_get(string $key) : string {
 function session_set(string $key, string $value) : string {
 
 	if(empty($key)){
-		throw new Exception('Session variable key is required');
+		throw new \Exception('Session variable key is required');
 	}
 
 	if(!(session_status() === PHP_SESSION_ACTIVE)){

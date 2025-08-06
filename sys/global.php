@@ -1,5 +1,7 @@
 <?php
 
+namespace PaperCMS;
+
 // Global variables
 if(!defined('__ROOT__')){
 	define('__ROOT__', dirname(__DIR__, 1));
@@ -37,6 +39,7 @@ require_once 'classes/recordset.php';
 require_once 'classes/css.php';
 require_once 'classes/js.php';
 require_once 'classes/csp.php';
+require_once 'classes/mail.php';
 require_once 'classes/media.php';
 require_once 'classes/menu.php';
 require_once 'classes/meta.php';
