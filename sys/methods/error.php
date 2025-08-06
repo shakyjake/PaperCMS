@@ -51,7 +51,7 @@
 				error_write($error_number, $error_msg, $error_file, $error_line, $stack_trace, $error_is_fatal);
 			}
 
-			if(do_check(config('Errors/Log'), true)){ 
+			if(do_check(config('Errors/LogDB'), false)){ 
 				error_log_db($error_number, $error_msg, $error_file, $error_line, $stack_trace, $error_is_fatal);
 			}
 
@@ -226,13 +226,13 @@
 		$error_template = tag_parse($error_template, 'NUMBER', html($error_number) . "\r\n");
 		$error_template = tag_parse($error_template, 'STACKTRACE', html(print_r($stack_trace, true)) . "\r\n");
 		$error_template = tag_parse($error_template, 'IPADDRESS', html(do_check(ip_get(), 'Unavailable')) . "\r\n");
-		$error_template = tag_parse($error_template, 'FORM_DATA', implode('<br />\r\n', $post_params) . "\r\n");
-		$error_template = tag_parse($error_template, 'QUERY_DATA', implode('<br />\r\n', $get_params) . "\r\n");
-		$error_template = tag_parse($error_template, 'COOKIES', implode('<br />\r\n', $cookies) . "\r\n");
+		$error_template = tag_parse($error_template, 'FORM_DATA', implode("<br />\r\n", $post_params) . "\r\n");
+		$error_template = tag_parse($error_template, 'QUERY_DATA', implode("<br />\r\n", $get_params) . "\r\n");
+		$error_template = tag_parse($error_template, 'COOKIES', implode("<br />\r\n", $cookies) . "\r\n");
 		$error_template = tag_parse($error_template, 'USER_AGENT', html($_SERVER['HTTP_USER_AGENT']) . "\r\n");
-		$error_template = tag_parse($error_template, 'SERVER_VARS', implode('<br />\r\n', $server_vars) . "\r\n");
+		$error_template = tag_parse($error_template, 'SERVER_VARS', implode("<br />\r\n", $server_vars) . "\r\n");
 
-		$error_template = tag_parse($error_template, 'PAGEID', 'Unavailable\r\n');
+		$error_template = tag_parse($error_template, 'PAGEID', "Unavailable\r\n");
 
 		if($error_is_fatal){
 			$error_template = tag_parse($error_template, 'FATAL', 'Yes' . "\r\n");

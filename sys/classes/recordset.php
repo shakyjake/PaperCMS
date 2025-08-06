@@ -10,6 +10,8 @@ class RecordSet {
 	private $sql = '';
 	
     function __construct(string $sql, array &$params = [], array $options = [], int $fetch_type = SQLSRV_FETCH_ASSOC){
+
+		global $current_user;
 	
 		$this->sql = $sql;
 
@@ -23,7 +25,19 @@ class RecordSet {
 
 			sqlsrv_close($connection);
 
-			throw new \Exception('Unable to obtain RecordSet for query ' . $sql . ': ' . print_r($errors, true));
+			$error_msg = 'Unable to obtain RecordSet for query ';
+
+			if($current_user->group() > 2){
+				$sql_parts = explode('?', $sql);
+				foreach($params as $key => $value){
+					$sql_parts[$key] .= '\'' . (string)$value[0] . '\'';
+				}
+				$sql = implode('', $sql_parts);
+			}
+
+			$error_msg .= $sql;
+
+			throw new \Exception($error_msg . ': ' . print_r($errors, true));
 			
 		} else {
 			

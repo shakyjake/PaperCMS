@@ -73,7 +73,7 @@ class User {
 
 		while(!$RS->eof){
 			$this->data[$RS->row['DataKey']] = $RS->row['DataValue'];
-			$this->data[$RS->row['DataKey']] = new UserData($this->id, $RS->row['UserDataId'], $RS->row['DataKey'], $RS->row['DataValue'], $RS->row['Encrypted']);
+			$this->data[$RS->row['DataKey']] = new UserData($this->id, $RS->row['UserDataId'], $RS->row['DataKey'], $RS->row['DataValue']);
 			$RS->move_next();
 		}
 
@@ -133,8 +133,8 @@ class User {
 				if(password_verify($this->password, $RS->row['Password'])){
 	
 					$this->profile_picture = sprintf('https://www.gravatar.com/avatar/%1$s?s=80', hash('sha256', $RS->row['EmailAddress']));
-					$this->group = (int)$RS->row['UserGroupId'];
-					$this->id = (int)$RS->row['UserId'];
+					$this->group = $RS->row['UserGroupId'];
+					$this->id = $RS->row['UserId'];
 	
 					foreach($RS->row as $key => $value){
 						if(in_array($key, $hidden_fields)){
@@ -240,7 +240,9 @@ class User {
 		if(session_status() === PHP_SESSION_ACTIVE){
 		
 			if(!empty($this->login_token)){
-				cookie_set('LoginToken', $this->login_token);
+				if(!headers_sent()){
+					cookie_set('LoginToken', $this->login_token);
+				}
 			}
 			if(!empty($this->user_name)){
 				session_set('UserName', $this->user_name);
@@ -275,15 +277,13 @@ class UserData {
 	public $user_id = null;
 	public $name = null;
 	public $value = null;
-	public $encrypted = null;
 	
 	function save(){
 		execute_sql('userData_Save', [
 			[$this->id, SQLSRV_PARAM_OUT],
 			$this->user_id,
 			$this->name,
-			$this->value,
-			$this->encrypted
+			$this->value
 		]);
 	}
 	
@@ -314,7 +314,6 @@ class UserData {
 		$this->user_id = $user_id;
 		$this->name = $name;
 		$this->value = $value;
-		$this->encrypted = $encrypted;
 	}
 	
 	function __destruct(){
@@ -322,7 +321,6 @@ class UserData {
 		$this->user_id = null;
 		$this->name = null;
 		$this->value = null;
-		$this->encrypted = null;
 	}
 
 }

@@ -48,7 +48,7 @@ class AJAXResponse implements \JsonSerializable {
 	function output(){
 		header('Content-Type: application/json');
 		http_response_code($this->status_code);
-		echo json_encode($this);
+		die(json_encode($this));
 	}
 
 	function __construct(){

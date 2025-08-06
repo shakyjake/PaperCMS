@@ -457,7 +457,7 @@ class Page {
 
 		//$this->json_save();
 
-		echo $html;
+		die($html);
 
 	}
 	

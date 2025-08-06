@@ -182,8 +182,6 @@
 	 */
 	function sql_params_parse(mixed $params = null){
 
-		$output_params = [];
-
 		if(empty($params)){
 			$params = [];
 		}
@@ -192,26 +190,41 @@
 			$params = [$params];
 		}
 
+		$return_params = [];
+
 		foreach($params as $key => $value){
 
-			$output_params[$key] = [];
+			$return_value = [null, SQLSRV_PARAM_IN];
+
+			$output_type = null;
 
 			if(is_countable($value)){
-				$output_params[$key][] = &$value[0];
-				if(count($value) === 1){
-					$output_params[$key][] = SQLSRV_PARAM_IN;
+				if(count($value)){
+					$return_value[0] = &$params[$key][0];
 				}
-				if($key === 0 && $value[1] === SQLSRV_PARAM_OUT && count($value) === 2){
-					$output_params[$key][] = SQLSRV_PHPTYPE_INT;/* SQLSRV only returns integers (unless blah blah blah, never ever use OUTPUT parameters in SQL besides RETURN) */
+				if(count($value) > 1){
+					$return_value[1] = $value[1];
+				}
+				if(count($value) > 2){
+					$output_type = $value[2];
 				}
 			} else {
-				$output_params[$key] = [&$value, SQLSRV_PARAM_IN];
+				$return_value[0] = &$params[$key];
 			}
+
+			if($return_value[1] === SQLSRV_PARAM_OUT){
+				if($output_type){
+					$return_value[] = $output_type;
+				} else {
+					$return_value[] = SQLSRV_PHPTYPE_INT;
+				}
+			}
+
+			$return_params[] = $return_value;
+
 		}
 
-		$params = $output_params;
-
-		return $output_params;
+		return $return_params;
 
 	}
 
