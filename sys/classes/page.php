@@ -391,6 +391,7 @@ class Page {
 			return '';
 		}
 
+		$html = tag_parse($html, 'PAGE.ID', $this->id);
 		$html = tag_parse($html, 'PAGE.META', $this->meta_html());
 		$html = tag_parse($html, 'PAGE.NAME', $this->name);
 		$html = tag_parse($html, 'PAGE.URL', sprintf(

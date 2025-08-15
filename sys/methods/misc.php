@@ -13,7 +13,11 @@ function noop(){
  * @return bool
  */
 function accept_html() : bool {
-	return strpos($_SERVER['HTTP_ACCEPT'], 'text/html') !== false;
+	$accept = 'text/plain';/* bots */
+	if(!empty($_SERVER['HTTP_ACCEPT'])){
+		$accept = $_SERVER['HTTP_ACCEPT'];
+	}
+	return strpos($accept, 'text/html') !== false;
 }
 
 /**
